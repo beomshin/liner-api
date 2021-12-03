@@ -26,6 +26,7 @@ import com.web.liner.constants.LCons;
 import com.web.liner.service.MbService;
 import com.web.liner.util.Utils;
 import com.web.liner.vo.AccountTb;
+import com.web.liner.vo.BrandTb;
 import com.web.liner.vo.OrderTb;
 import com.web.liner.vo.PlaceTb;
 import com.web.liner.vo.WorkerTb;
@@ -36,7 +37,7 @@ import com.web.liner.vo.WorkerTb;
 public class MbV1Controller {
 
 	private final Logger logger = LoggerFactory.getLogger(MbV1Controller.class);
-	private static List<PlaceTb> places;
+	private static List<BrandTb> brands;
 	
 	@Autowired
 	MbService mbService;
@@ -47,10 +48,10 @@ public class MbV1Controller {
 	@RequestMapping(method = RequestMethod.POST, path = "/search/place")
 	public Map<String, Object> searchPlaceAndBarnd(@RequestBody Map<String, Object> param) throws Exception { // 장소&브랜드 조회하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		if (places == null) {
-			places = mbService.searchPlaceAndBarnd();
+		if (brands == null) {
+			brands = mbService.searchPlaceAndBarnd();
 		}
-		res.put(LCons.PLACES, places);
+		res.put(LCons.BRANDS, brands);
 		return Utils.resSet(res, param);
 	}
 	

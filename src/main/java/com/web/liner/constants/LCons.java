@@ -13,6 +13,7 @@ public class LCons {
 	public static String WORKER = "worker"; // 알바생
 	public static String ACCOUNT = "account"; // 계좌
 	public static String PLACES = "places"; // 장소s
+	public static String BRANDS = "brands"; // 브랜드s
 
 	
 }

@@ -60,17 +60,17 @@ public class MbService {
 	@Autowired
 	AccountTbRepository accountTbRepository;
 	
-	public List<PlaceTb> searchPlaceAndBarnd() throws Exception { // 장소 & 브랜드 찾기
+	public List<BrandTb> searchPlaceAndBarnd() throws Exception { // 장소 & 브랜드 찾기
 		
 		logger.debug("[장초 찾기 findAll]");
-		List<PlaceTb> placeTbList = placeTbRepository.findAll(); // 장소 찾기
-		for(PlaceTb place : placeTbList) {
+		List<BrandTb> brandList = brandTbRepository.findAll(); // 장소 찾기
+		for(BrandTb brand : brandList) {
 			logger.debug("[브랜드찾기 찾기 findByPlaceTb_placeId]");
-			List<BrandMapping> brandTbList = brandTbRepository.findByPlaceTb_placeId(place.getPlaceId()); // 장소별 브랜드 찾기
-			place.setBrands(brandTbList);
+			List<PlaceMapping> places = placeTbRepository.findByBrandTb_brandId(brand.getBrandId()); // 장소별 브랜드 찾기
+			brand.setPlaces(places);
 		}
 		
-		return placeTbList;
+		return brandList;
 	}
 	
 	public OrderTb applyLineService(OrderTb order) throws Exception { // 주문내역 저장 서비스
