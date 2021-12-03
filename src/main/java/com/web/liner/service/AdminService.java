@@ -78,14 +78,15 @@ public class AdminService {
 		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContaining(name, phone, PageRequest.of(curPage, pageNum)); // 알바 리스트 조회
 		int count = workerTbRepository.countByNameContainingAndPhoneContaining(name, phone); // 알바 리스트 총 개수 조회
 		
-		for (WorkerTb worker : workList) { // 핸드폰 복호화
+		for (WorkerTb worker : workList) { // 핸드폰, 카카오톡 아이디, 계좌번호 복호화
 			try {
 				worker.setPhone(new AES256Util().decrypt(worker.getPhone()));
 				worker.setKakaoId(new AES256Util().decrypt(worker.getKakaoId()));
 				worker.setAccount(new AES256Util().decrypt(worker.getAccountTb().getAccount()));
 				worker.setBank(worker.getAccountTb().getBank());
+				worker.setAccountTb(null);
 			} catch (Exception e) {
-				worker.setPhone("핸드폰 암호화 오류");
+				worker.setAccount("계좌번호 복호화 오류");
 			}
 		}
 	

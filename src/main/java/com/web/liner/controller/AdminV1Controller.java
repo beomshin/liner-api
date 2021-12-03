@@ -55,7 +55,6 @@ public class AdminV1Controller {
 	public Map<String, Object> orderWorkerList(@RequestBody Map<String, Object> param) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		adminService.orderWorkerList(res, param); // 주문내역 조회
-		logger.debug("{}", res);
 		return Utils.resSet(res, param);
 	}
 	
