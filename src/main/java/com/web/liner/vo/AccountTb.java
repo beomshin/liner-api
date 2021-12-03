@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "accounttb")
 @Table(name = "accounttb")
 @JsonInclude(Include.NON_NULL)
-@JsonIgnoreProperties({"bankId", "regDt", "modDt"})
+@JsonIgnoreProperties({"bankId", "regDt", "modDt", "workerId"})
 @DynamicInsert
 public class AccountTb {
 
@@ -36,9 +36,8 @@ public class AccountTb {
 	@Column(name = "accountId")
 	private Long accountId;
 	
-	@ManyToOne
-	@JoinColumn(name = "workerId")
-	private WorkerTb workerTb;
+	@Column(name = "workerId")
+	private Long workerId;
 	
 	@Column(name = "account")
 	private String account;
@@ -53,5 +52,12 @@ public class AccountTb {
 	@Column(name = "modDt")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Date modDt;
+
+	@Override
+	public String toString() {
+		return "AccountTb [accountId=" + accountId + ", account=" + account + ", bank=" + bank + "]";
+	}
+	
+	
 	
 }

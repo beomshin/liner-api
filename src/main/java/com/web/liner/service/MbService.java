@@ -99,10 +99,11 @@ public class MbService {
 		AES256Util aes256Util = new AES256Util();
 		worker.setPhone(aes256Util.encrypt(worker.getPhone()));
 		worker.setKakaoId(aes256Util.encrypt(worker.getKakaoId()));
+		account.setAccount(aes256Util.encrypt(account.getAccount()));
 		
 		logger.debug("[알바 테이블 저장]");
 		worker = workerTbRepository.save(worker); // 알바 테이블 생성
-		account.setWorkerTb(worker);
+		account.setWorkerId(worker.getWorkerId());
 		
 		logger.debug("[계좌번호 테이블 저장]");
 		account = accountTbRepository.save(account);// 계좌번호 테이블 생성

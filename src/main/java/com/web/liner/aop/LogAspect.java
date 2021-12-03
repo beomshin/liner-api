@@ -46,6 +46,7 @@ public class LogAspect {
     		request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     		logger.info("======> 시작 [{}] 메소드", pjp.getSignature().getName());
     		logger.info("======> URL : [{}]", request.getRequestURL());
+    		logger.info("======> 요청 데이터 : [{}]", pjp.getArgs());
     		
     		res = (Map<String, Object>) pjp.proceed();
     		res.put(LCons.RESULT_CODE, 0);

@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "workertb")
 @Table(name = "workertb")
 @JsonInclude(Include.NON_NULL)
-@JsonIgnoreProperties({"regDt", "modDt"})
+@JsonIgnoreProperties({"regDt", "modDt", "accountId"})
 public class WorkerTb {
 
 	@Id
@@ -65,5 +66,12 @@ public class WorkerTb {
 	@Column(name = "modDt")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Date modDt;
+
+	@Transient
+	private String account;
+	
+	@Transient
+	private String bank;
+	
 	
 }
