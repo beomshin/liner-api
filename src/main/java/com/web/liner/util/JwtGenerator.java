@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.web.liner.constants.ErrorConstants;
 import com.web.liner.controller.MbV1Controller;
 
 import io.jsonwebtoken.Claims;
@@ -59,18 +60,18 @@ public class JwtGenerator {
      * 
      * @param jwt
      * @return
+     * @throws LineException 
      * @throws Exception
      */
-    public boolean verifyJWT(String jwt) throws Exception {
-    	Map<String, Object> claimMap = null;
-    	
-    	Claims claims = Jwts.parser()
-    					.setSigningKey(apikey.getBytes("UTF-8"))
-    					.parseClaimsJws(jwt)
-    					.getBody();
-    	claimMap = claims;
-       
-    	Date expiration = claims.get("exp", Date.class);
-    	return expiration.after(new Date());
+    public void verifyJWT(String jwt) throws LineException {    	
+    	try {
+    		Jwts.parser()
+			.setSigningKey(apikey.getBytes("UTF-8"))
+			.parseClaimsJws(jwt)
+			.getBody();
+    	} catch (Exception e) {
+    		throw new LineException(ErrorConstants.JWT_VERIFY_ERROR, "jwt token verify fail error");
+    	}
+
     }
 }
