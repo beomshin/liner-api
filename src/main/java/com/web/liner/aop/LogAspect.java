@@ -61,7 +61,7 @@ public class LogAspect {
     	}finally {
     		request = null;
     		long end = System.currentTimeMillis();
-    		logger.info("======> 종료 [{}] 메소드 (수행 시간 [{}]", pjp.getSignature().getName(), end - start);
+    		logger.info("======> 종료 [{}] 메소드 (수행 시간 [{}])", pjp.getSignature().getName(), end - start);
     	}
     	
     	return res;
@@ -69,7 +69,7 @@ public class LogAspect {
 
 	@AfterThrowing(value = "publicTarget()", throwing = "e")
     public void writeFailLog(JoinPoint joinPoint, Throwable e) {
-    	logger.error("======> 에러 발생 : {}", e);
+    	logger.error("===========> 에러 발생 : ", e);
     }
     
     @AfterReturning(value = "publicTarget()", returning="result")

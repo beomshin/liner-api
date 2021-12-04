@@ -4,7 +4,9 @@ public class LCons {
 
 	public static String RESULT_CODE = "resultCode"; // 결과코드
 	public static String RESULT_MSG = "resultMsg"; // 결과 메시지
-
+	public static String LINER = "liner";
+	public static int ONE_HOUR = 1000 *  60 * 60;
+	
 	// 공통
 	public static String ORDER_CODE = "orderCode"; // 주문코드
 	public static String ORDER = "order"; // 주문

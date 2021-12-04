@@ -1,31 +1,21 @@
 package com.web.liner.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.web.liner.constants.LCons;
 import com.web.liner.dao.OrderTbRepository;
 import com.web.liner.service.AdminService;
-import com.web.liner.util.AES256Util;
 import com.web.liner.util.Utils;
-import com.web.liner.vo.OrderTb;
 
 @Controller
 @ResponseBody
@@ -40,8 +30,10 @@ public class AdminV1Controller {
 	AdminService adminService;
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/v1/admin/login")
-	public String adminLogin() {
-		return "adminLogin";
+	public Map<String, Object> adminLogin(@RequestBody Map<String, Object> param) throws Exception {
+		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		adminService.adminLogin(res, param); // 주문내역 조회
+		return Utils.resSet(res, param);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/v1/admin/order/list")
@@ -52,26 +44,31 @@ public class AdminV1Controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/v1/admin/order/worker/list")
-	public Map<String, Object> orderWorkerList(@RequestBody Map<String, Object> param) throws Exception {
+	public Map<String, Object> orderWorkerList(@RequestBody Map<String, Object> param) throws Exception { // 알바 리스트 조회 
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		adminService.orderWorkerList(res, param); // 주문내역 조회
+		adminService.orderWorkerList(res, param); // 알바 리스트 조회 ( 이름, 핸드폰 필터링)
 		return Utils.resSet(res, param);
 	}
 	
-	
 	@RequestMapping(method = RequestMethod.POST, path = "/v1/admin/order/worker/assign")
-	public String orderWorkerAssign(@RequestBody Map<String, Object> param) {
-		return "orderWorkerAssign";
+	public Map<String, Object>  orderWorkerAssign(@RequestBody Map<String, Object> param) { // 알바 배정
+		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		adminService.orderWorkerAssign(param); // 주문내역 조회
+		return Utils.resSet(res, param);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/v1/admin/worker/list")
-	public String workerList(@RequestBody Map<String, Object> param) {
-		return "workerList";
+	public Map<String, Object> workerList(@RequestBody Map<String, Object> param) throws Exception {
+		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		adminService.orderWorkerList(res, param); // 알바 리스트 조회 ( 이름, 핸드폰 필터링)
+		return Utils.resSet(res, param);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/v1/admin/worker/auth")
-	public String workerAuth(@RequestBody Map<String, Object> param) {
-		return "workerAuth";
+	public Map<String, Object> workerAuth(@RequestBody Map<String, Object> param) throws Exception {
+		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		adminService.workerAuth(param); // 알바 리스트 조회 ( 이름, 핸드폰 필터링)
+		return Utils.resSet(res, param);
 	}
 	
 }
