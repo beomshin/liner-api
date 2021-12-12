@@ -21,7 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.web.liner.constants.ErrorConstants;
 import com.web.liner.constants.LCons;
-import com.web.liner.controller.AdminV1Controller;
+import com.web.liner.controller.AdminController;
 import com.web.liner.util.LineException;
 import com.web.liner.util.Utils;
 

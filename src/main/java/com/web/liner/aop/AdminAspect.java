@@ -21,18 +21,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.web.liner.constants.ErrorConstants;
 import com.web.liner.constants.LCons;
-import com.web.liner.controller.AdminV1Controller;
+import com.web.liner.controller.AdminController;
 import com.web.liner.util.JwtGenerator;
 import com.web.liner.util.LineException;
 import com.web.liner.util.Utils;
 
 @Aspect
 @Component
-public class AdminV1Aspect {
+public class AdminAspect {
 
-	private final Logger logger = LoggerFactory.getLogger(AdminV1Aspect.class);
+	private final Logger logger = LoggerFactory.getLogger(AdminAspect.class);
 	
-	@Pointcut("execution(public * com.web.liner.controller.AdminV1Controller.*(..))") 
+	@Pointcut("execution(public * com.web.liner.controller.AdminController.*(..))") 
 	private void adminV1Target() { }
 	
 	@SuppressWarnings("unchecked")

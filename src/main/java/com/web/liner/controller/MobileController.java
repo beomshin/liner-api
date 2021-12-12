@@ -26,9 +26,11 @@ import com.web.liner.constants.LCons;
 import com.web.liner.request.ReqApplyService;
 import com.web.liner.request.ReqApplyWorker;
 import com.web.liner.request.ReqCommon;
+import com.web.liner.service.CommonService;
 import com.web.liner.service.MbService;
 import com.web.liner.util.Utils;
 import com.web.liner.vo.AccountTb;
+import com.web.liner.vo.BankTb;
 import com.web.liner.vo.BrandTb;
 import com.web.liner.vo.OrderTb;
 import com.web.liner.vo.PlaceTb;
@@ -40,18 +42,20 @@ import com.web.liner.vo.WorkerTb;
 public class MobileController {
 
 	private final Logger logger = LoggerFactory.getLogger(MobileController.class);
-	private static List<BrandTb> brands;
 	
 	@Autowired
 	MbService mbService;
-		
+	
+	@Autowired
+	CommonService commonService;
+	
 	@Autowired
 	ObjectMapper objectMapper;
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/search/place")
 	public Map<String, Object> searchPlaceAndBarnd(@RequestBody ReqCommon param) throws Exception { // 장소&브랜드 조회하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		brands = mbService.searchPlaceAndBarnd();
+		List<BrandTb> brands = commonService.searchBrands();
 		res.put(LCons.BRANDS, brands);
 		return Utils.resSet(res, param.getCmd());
 	}
@@ -82,7 +86,8 @@ public class MobileController {
 	@RequestMapping(method = RequestMethod.POST, path = "/search/bank")
 	public Map<String, Object> searchBank(@RequestBody ReqCommon param) { // 은행 정보 찾기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		res.put(LCons.BANKS, mbService.searchBank()); // 은행 정보 찾기 서비스
+		List<BankTb> banks = commonService.searchBanks();
+		res.put(LCons.BANKS, banks); // 은행 정보 찾기 서비스
 		return Utils.resSet(res, param.getCmd());
 	}
 

@@ -24,9 +24,9 @@ import com.web.liner.util.Utils;
 @Controller
 @ResponseBody
 @RequestMapping("/v1/admin")
-public class AdminV1Controller {
+public class AdminController {
 
-	private final Logger logger = LoggerFactory.getLogger(AdminV1Controller.class);
+	private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
 	OrderTbRepository orderTbRepository;
