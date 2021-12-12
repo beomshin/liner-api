@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.web.liner.request.ReqAdminLogin;
-import com.web.liner.service.AdminService;
 import com.web.liner.service.CommonService;
 import com.web.liner.util.Utils;
 

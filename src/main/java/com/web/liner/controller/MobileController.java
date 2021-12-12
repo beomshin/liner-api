@@ -27,7 +27,8 @@ import com.web.liner.request.ReqApplyService;
 import com.web.liner.request.ReqApplyWorker;
 import com.web.liner.request.ReqCommon;
 import com.web.liner.service.CommonService;
-import com.web.liner.service.MbService;
+import com.web.liner.service.OrderService;
+import com.web.liner.service.WorkerService;
 import com.web.liner.util.Utils;
 import com.web.liner.vo.AccountTb;
 import com.web.liner.vo.BankTb;
@@ -42,12 +43,15 @@ import com.web.liner.vo.WorkerTb;
 public class MobileController {
 
 	private final Logger logger = LoggerFactory.getLogger(MobileController.class);
-	
-	@Autowired
-	MbService mbService;
-	
+
 	@Autowired
 	CommonService commonService;
+	
+	@Autowired
+	OrderService orderService;
+	
+	@Autowired
+	WorkerService workerService;
 	
 	@Autowired
 	ObjectMapper objectMapper;
@@ -63,7 +67,7 @@ public class MobileController {
 	@RequestMapping(method = RequestMethod.POST, path = "/apply/line/service")
 	public Map<String, Object> applyLineService(@RequestBody ReqApplyService param) throws Exception { // 서비스 구매 신청하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		OrderTb orderTb = mbService.applyLineService(param.getOrder()); // 구매 신청 order 저장
+		OrderTb orderTb = orderService.applyOrder(param.getOrder()); // 구매 신청 order 저장
 		res.put(LCons.ORDER_CODE, orderTb.getOrderCode()); // res orderCode setting
 		return Utils.resSet(res, param.getCmd());
 	}
@@ -71,14 +75,15 @@ public class MobileController {
 	@RequestMapping(method = RequestMethod.GET, path = "/check/line/service/{orderCode}")
 	public Map<String, Object> checkLineService(@PathVariable("orderCode") String orderCode) throws Exception  { // 주문 예약 확인하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		res.put(LCons.ORDER, mbService.checkLineService(orderCode)); // 주문 예약 확인(orderCode)
+		OrderTb order = orderService.searchOrder(orderCode);
+		res.put(LCons.ORDER, order); // 주문 예약 확인(orderCode)
 		return res;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/apply/line/worker")
 	public Map<String, Object> applyLineWorker(@RequestBody ReqApplyWorker param) throws Exception { // 알바 신청하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		String authCode = mbService.applyLineWorker(param.getWorker(), param.getBankInfo()); // 알바 정보 저장 서비스
+		String authCode = workerService.applyWorker(param.getWorker(), param.getBankInfo()); // 알바 정보 저장 서비스
 		res.put(LCons.AUTH_CODE, authCode); // authCode
 		return Utils.resSet(res, param.getCmd());
 	}
