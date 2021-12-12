@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.liner.constants.LCons;
+import com.web.liner.request.ReqApplyService;
+import com.web.liner.request.ReqApplyWorker;
+import com.web.liner.request.ReqCommon;
 import com.web.liner.service.MbService;
 import com.web.liner.util.Utils;
 import com.web.liner.vo.AccountTb;
@@ -34,9 +37,9 @@ import com.web.liner.vo.WorkerTb;
 @Controller
 @ResponseBody
 @RequestMapping("/v1/mb")
-public class MbV1Controller {
+public class MobileController {
 
-	private final Logger logger = LoggerFactory.getLogger(MbV1Controller.class);
+	private final Logger logger = LoggerFactory.getLogger(MobileController.class);
 	private static List<BrandTb> brands;
 	
 	@Autowired
@@ -46,22 +49,19 @@ public class MbV1Controller {
 	ObjectMapper objectMapper;
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/search/place")
-	public Map<String, Object> searchPlaceAndBarnd(@RequestBody Map<String, Object> param) throws Exception { // 장소&브랜드 조회하기
+	public Map<String, Object> searchPlaceAndBarnd(@RequestBody ReqCommon param) throws Exception { // 장소&브랜드 조회하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		if (brands == null) {
-			brands = mbService.searchPlaceAndBarnd();
-		}
+		brands = mbService.searchPlaceAndBarnd();
 		res.put(LCons.BRANDS, brands);
-		return Utils.resSet(res, param);
+		return Utils.resSet(res, param.getCmd());
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/apply/line/service")
-	public Map<String, Object> applyLineService(@RequestBody Map<String, Object> param) throws Exception { // 서비스 구매 신청하기
+	public Map<String, Object> applyLineService(@RequestBody ReqApplyService param) throws Exception { // 서비스 구매 신청하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		OrderTb order = objectMapper.convertValue(param.get(LCons.ORDER), OrderTb.class); // 파라미터 order
-		OrderTb orderTb = mbService.applyLineService(order); // 구매 신청 order 저장
+		OrderTb orderTb = mbService.applyLineService(param.getOrder()); // 구매 신청 order 저장
 		res.put(LCons.ORDER_CODE, orderTb.getOrderCode()); // res orderCode setting
-		return Utils.resSet(res, param);
+		return Utils.resSet(res, param.getCmd());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/check/line/service/{orderCode}")
@@ -72,20 +72,18 @@ public class MbV1Controller {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/apply/line/worker")
-	public Map<String, Object> applyLineWorker(@RequestBody Map<String, Object> param) throws Exception { // 알바 신청하기
+	public Map<String, Object> applyLineWorker(@RequestBody ReqApplyWorker param) throws Exception { // 알바 신청하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		WorkerTb worker = objectMapper.convertValue(param.get(LCons.WORKER), WorkerTb.class); // 파라미터 worker
-		AccountTb account = objectMapper.convertValue(param.get(LCons.ACCOUNT), AccountTb.class); // 파라미터 account
-		String authCode = mbService.applyLineWorker(worker, account); // 알바 정보 저장 서비스
+		String authCode = mbService.applyLineWorker(param.getWorker(), param.getBankInfo()); // 알바 정보 저장 서비스
 		res.put(LCons.AUTH_CODE, authCode); // authCode
-		return Utils.resSet(res, param);
+		return Utils.resSet(res, param.getCmd());
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/search/bank")
-	public Map<String, Object> searchBank(@RequestBody Map<String, Object> param) { // 은행 정보 찾기
+	public Map<String, Object> searchBank(@RequestBody ReqCommon param) { // 은행 정보 찾기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		res.put(LCons.BANKS, mbService.searchBank()); // 은행 정보 찾기 서비스
-		return Utils.resSet(res, param);
+		return Utils.resSet(res, param.getCmd());
 	}
 
 }

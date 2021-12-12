@@ -16,8 +16,8 @@ public class Utils {
 		return CMD.replace("req", "res");
 	}
 	
-	public static Map<String, Object> resSet(Map<String, Object> res, Map<String, Object> param) { // response 공통 세팅
-		res.put("cmd", Utils.replaceCMD((String)param.get("cmd")));
+	public static Map<String, Object> resSet(Map<String, Object> res, String cmd) { // response 공통 세팅
+		res.put("cmd", Utils.replaceCMD(cmd));
 		return res;
 	}
 	

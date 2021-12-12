@@ -13,7 +13,7 @@ public class LCons {
 	public static String AUTH_CODE = "authCode"; // 인증코드
 	public static String BANKS = "banks"; // 은행s
 	public static String WORKER = "worker"; // 알바생
-	public static String ACCOUNT = "account"; // 계좌
+	public static String BANK_INFO = "bankInfo"; // 은행정보
 	public static String PLACES = "places"; // 장소s
 	public static String BRANDS = "brands"; // 브랜드s
 	public static int PAGE_NUM = 10; // 페이징 10개

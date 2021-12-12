@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.web.liner.constants.ErrorConstants;
-import com.web.liner.controller.MbV1Controller;
+import com.web.liner.controller.MobileController;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

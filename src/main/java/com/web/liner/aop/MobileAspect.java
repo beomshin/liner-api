@@ -27,11 +27,11 @@ import com.web.liner.util.Utils;
 
 @Aspect
 @Component
-public class MobileV1Aspect {
+public class MobileAspect {
 
-	private final Logger logger = LoggerFactory.getLogger(MobileV1Aspect.class);
+	private final Logger logger = LoggerFactory.getLogger(MobileAspect.class);
 	
-	@Pointcut("execution(public * com.web.liner.controller.MbV1Controller.*(..))") 
+	@Pointcut("execution(public * com.web.liner.controller.MobileController.*(..))") 
 	private void mobileV1Target() { }
 	
 	@SuppressWarnings("unchecked")

@@ -58,10 +58,10 @@ public class OrderTb {
 	private String place;
 	
 	@Column(name = "beginTime")
-	private int beginTime;
+	private String beginTime;
 	
 	@Column(name = "endTime")
-	private int endTime;
+	private String endTime;
 	
 	@Column(name = "orderTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")

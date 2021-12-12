@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.web.liner.controller.MbV1Controller;
+import com.web.liner.controller.MobileController;
 import com.web.liner.dao.AccountTbRepository;
 import com.web.liner.dao.AuthTbRepository;
 import com.web.liner.dao.BankTbRepository;

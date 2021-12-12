@@ -21,6 +21,11 @@ import com.web.liner.dao.AdminTbRepository;
 import com.web.liner.dao.AuthTbRepository;
 import com.web.liner.dao.OrderTbRepository;
 import com.web.liner.dao.WorkerTbRepository;
+import com.web.liner.request.ReqAdminLogin;
+import com.web.liner.request.ReqOrderList;
+import com.web.liner.request.ReqOrderWorker;
+import com.web.liner.request.ReqWorkerAssign;
+import com.web.liner.request.ReqWorkerAuth;
 import com.web.liner.util.AES256Util;
 import com.web.liner.util.JwtGenerator;
 import com.web.liner.util.LineException;
@@ -46,9 +51,9 @@ public class AdminService {
 	@Autowired
 	AdminTbRepository adminTbRepository;
 	
-	public void adminLogin(Map<String, Object> res, Map<String, Object> param) throws Exception { // admin 로그인 서비스
-		String id = (String)param.get("id"); // id
-		String pw = (String)param.get("pw"); // pw
+	public void adminLogin(Map<String, Object> res, ReqAdminLogin param) throws Exception { // admin 로그인 서비스
+		String id = param.getId(); // id
+		String pw = param.getPw(); // pw
 		
 		AdminTb adminTb = adminTbRepository.findByIdAndPw(id, pw);
 		if (adminTb == null) { // 과리자 페이지 로그인 실패
@@ -61,17 +66,17 @@ public class AdminService {
 		}
 	}
 	
-	public void orderList(Map<String, Object> res, Map<String, Object> param) throws Exception { // 주문 내역 조회 서비스
+	public void orderList(Map<String, Object> res, ReqOrderList param) throws Exception { // 주문 내역 조회 서비스
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		String orderCode = (String)param.get("orderCode"); // 주문 코드
-		String phone = (String)param.get("phone"); // 핸드폰 번호
-		String name = (String)param.get("name"); // 이름
-		Date from = sdf.parse((String)param.get("from")); // 시작일
-		Date to = sdf.parse((String)param.get("to")); // 종료일
-		int pageNum = (int)param.get("pageNum"); // 페이지 개수
-		int curPage = (int)param.get("curPage"); // 현재 페이지
+		String orderCode = param.getOrderCode(); // 주문 코드
+		String phone = param.getPhone(); // 핸드폰 번호
+		String name = param.getName(); // 이름
+		Date from = sdf.parse(param.getFrom()); // 시작일
+		Date to = sdf.parse(param.getTo()); // 종료일
+		int pageNum = param.getPageNum(); // 페이지 개수
+		int curPage = param.getCurPage(); // 현재 페이지
 	
 		if(!StringUtils.isEmpty(phone)) {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
@@ -93,12 +98,12 @@ public class AdminService {
 
 	}
 	
-	public void orderWorkerList(Map<String, Object> res, Map<String, Object> param) throws Exception { // 알바 리스트ㅇ 조회 서비스
+	public void orderWorkerList(Map<String, Object> res, ReqOrderWorker param) throws Exception { // 알바 리스트ㅇ 조회 서비스
 				
-		String phone = (String)param.get("phone"); // 핸드폰 번호
-		String name = (String)param.get("name"); // 이름
-		int pageNum = (int)param.get("pageNum"); // 페이지 개수
-		int curPage = (int)param.get("curPage"); // 현재 페이지
+		String phone = param.getPhone(); // 핸드폰 번호
+		String name = param.getName(); // 이름
+		int pageNum = param.getPageNum(); // 페이지 개수
+		int curPage = param.getCurPage(); // 현재 페이지
 	
 		if(!StringUtils.isEmpty(phone)) {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
@@ -123,17 +128,17 @@ public class AdminService {
 		res.put("count", count);	
 	}
 	
-	public void orderWorkerAssign(Map<String, Object> param) { // 알바 배정하기
-		OrderTb orderTb = orderTbRepository.findByOrderId(Long.valueOf((int)param.get("orderId"))); // ordertb 조회
+	public void orderWorkerAssign(ReqWorkerAssign param) { // 알바 배정하기
+		OrderTb orderTb = orderTbRepository.findByOrderId(Long.valueOf(param.getOrderId())); // ordertb 조회
 		WorkerTb workerTb = new WorkerTb();
-		workerTb.setWorkerId(Long.valueOf((int)param.get("workerId"))); // 외래키 workerId 세팅
+		workerTb.setWorkerId(Long.valueOf(param.getWorkerId())); // 외래키 workerId 세팅
 		orderTb.setWorkerTb(workerTb);
 		orderTbRepository.save(orderTb); // update
 	}
 	
-	public void workerAuth(@RequestBody Map<String, Object> param) throws Exception { // 알바 인증코드 입력 서비스
-		long workId = Long.valueOf((int)param.get("workerId")); // 알배 식별자
-		String authCode = (String)param.get("authCode"); // 인증 코드
+	public void workerAuth(@RequestBody ReqWorkerAuth param) throws Exception { // 알바 인증코드 입력 서비스
+		long workId = Long.valueOf(param.getWorkerId()); // 알배 식별자
+		String authCode = param.getAuthCode(); // 인증 코드
 		AuthTb authTb = authTbRepository.findByAuthCodeAndWorkerTb_workerId(authCode, workId); // 인증 조회
 		if (authTb == null) { // 알바 인증 실패
 			logger.error("====> [알바 인증 실패 오류]");
