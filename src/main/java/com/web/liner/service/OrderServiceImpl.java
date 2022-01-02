@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.web.liner.dao.ConfigTbRepository;
 import com.web.liner.dao.OrderTbRepository;
 import com.web.liner.util.AES256Util;
 import com.web.liner.util.Utils;
+import com.web.liner.vo.ConfigTb;
 import com.web.liner.vo.OrderTb;
 import com.web.liner.vo.WorkerTb;
 
@@ -25,11 +29,17 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	OrderTbRepository orderTbRepository;
 	
+	@Autowired
+	ConfigTbRepository configTbRepository;
+	
 	@Override
+	@Transactional
 	public OrderTb applyOrder(OrderTb order) throws Exception {
 		AES256Util aes256Util = new AES256Util();
 		order.setPhone(aes256Util.encrypt(order.getPhone()));
-		order.setOrderCode(Utils.createOrderCode());
+		ConfigTb configTb = configTbRepository.findByKey("pickNo");
+		order.setOrderCode(configTb.getValue());
+		configTbRepository.updatePickNo(String.valueOf(Integer.parseInt(configTb.getValue()) + 1));
 		logger.debug("[구매 신청하기 주문 저장 데이터] : {}", order);
 		
 		return orderTbRepository.save(order);

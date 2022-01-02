@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class Utils {
 
 	public static String createOrderCode() { // orderCoe 생성
-		return "" + System.nanoTime() + Math.round(Math.random() * 100);
+		return ("" + System.nanoTime()).substring(0,5);
 	}
 	
 	public static String replaceCMD(String CMD) { // cmd req -> res 변경
