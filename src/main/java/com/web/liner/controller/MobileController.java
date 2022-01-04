@@ -74,10 +74,10 @@ public class MobileController {
 		return Utils.resSet(res, param.getCmd());
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/check/line/service/{orderCode}")
-	public Map<String, Object> checkLineService(@PathVariable("orderCode") String orderCode) throws Exception  { // 주문 예약 확인하기
+	@RequestMapping(method = RequestMethod.GET, path = "/check/line/service")
+	public Map<String, Object> checkLineService(@RequestParam("orderCode") String orderCode, @RequestParam("phone") String phone) throws Exception  { // 주문 예약 확인하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		OrderTb order = orderService.searchOrder(orderCode);
+		OrderTb order = orderService.searchOrder(orderCode, phone);
 		res.put(LCons.ORDER, order); // 주문 예약 확인(orderCode)
 		return res;
 	}

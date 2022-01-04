@@ -46,11 +46,15 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderTb searchOrder(String orderCode) throws Exception {
+	public OrderTb searchOrder(String orderCode, String phone) throws Exception {
 		AES256Util aes256Util = new AES256Util();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		phone = aes256Util.encrypt(phone);
 		logger.debug("[orderCode 통해 주문내역 찾기 findByOrderCode]");
-		OrderTb orderTb = orderTbRepository.findByOrderCode(orderCode);
+		OrderTb orderTb = orderTbRepository.findByOrderCodeAndPhone(orderCode, phone);
 		orderTb.setPhone(aes256Util.decrypt(orderTb.getPhone()));
+		orderTb.setBeginTime(sdf.format(sdf.parse(orderTb.getBeginTime())));
+		orderTb.setEndTime(sdf.format(sdf.parse(orderTb.getEndTime())));
 		return orderTb; // orderCode로 주문내역 찾기
 	}
 
