@@ -48,8 +48,8 @@ public class AdminAspect {
     		logger.info("======> 시작 [{}] 메소드", pjp.getSignature().getName());
     		logger.info("======> URL : [{}]", request.getRequestURL());
     		logger.info("======> 요청 데이터 : [{}]", pjp.getArgs());
-    		String token = request.getHeader("Authorization"); // 헤더 인증 토큰 조회
-    		new JwtGenerator().verifyJWT(token); // 토큰 인증 처리
+//    		String token = request.getHeader("Authorization"); // 헤더 인증 토큰 조회
+//    		new JwtGenerator().verifyJWT(token); // 토큰 인증 처리
     
     		res = (Map<String, Object>) pjp.proceed();
     		res.put(LCons.RESULT_CODE, 0);

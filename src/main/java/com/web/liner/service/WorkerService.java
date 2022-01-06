@@ -10,6 +10,7 @@ import com.web.liner.vo.WorkerTb;
 
 @Service
 public interface WorkerService {
+	List<WorkerTb> searchOrderWorkerList(String phone, String name) throws Exception;
 	List<WorkerTb> searchWorkerList(String phone, String name, int pageNum, int curPage) throws Exception;
 	int searchWorkerListCount(String name, String phone);
 	AuthTb verifyAuthToWorker(long workId, String authCode) throws Exception;

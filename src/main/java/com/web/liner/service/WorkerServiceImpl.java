@@ -33,7 +33,31 @@ public class WorkerServiceImpl implements WorkerService {
 	
 	@Autowired
 	AccountTbRepository accountTbRepository;
-	
+
+	@Override
+	public List<WorkerTb> searchOrderWorkerList(String phone, String name) throws Exception {
+		// TODO Auto-generated method stub
+		if(!StringUtils.isEmpty(phone)) {
+			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화
+		}
+
+		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContaining(name, phone); // 알바 리스트 조회
+
+		for (WorkerTb worker : workList) { // 핸드폰, 카카오톡 아이디, 계좌번호 복호화
+			try {
+				worker.setPhone(new AES256Util().decrypt(worker.getPhone()));
+				worker.setKakaoId(new AES256Util().decrypt(worker.getKakaoId()));
+				worker.setAccount(new AES256Util().decrypt(worker.getAccountTb().getAccount()));
+				worker.setBank(worker.getAccountTb().getBank());
+				worker.setAccountTb(null);
+			} catch (Exception e) {
+				worker.setAccount("계좌번호 복호화 오류");
+			}
+		}
+
+		return workList;
+	}
+
 	@Override
 	public List<WorkerTb> searchWorkerList(String phone, String name, int pageNum, int curPage) throws Exception {
 		// TODO Auto-generated method stub
