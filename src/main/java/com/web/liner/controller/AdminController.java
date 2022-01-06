@@ -63,9 +63,9 @@ public class AdminController {
 	public Map<String, Object> orderWorkerList(@RequestBody ReqOrderWorker param) throws Exception { // 알바 리스트 조회 
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		List<WorkerTb> workerList = workerService.searchOrderWorkerList(param.getPhone(), param.getName());
-		int count = workerService.searchWorkerListCount(param.getName(), param.getPhone());
+//		int count = workerService.searchWorkerListCount(param.getName(), param.getPhone());
 		res.put("workerList", workerList);
-		res.put("count", count);
+//		res.put("count", count);
 		return Utils.resSet(res, param.getCmd());
 	}
 	
