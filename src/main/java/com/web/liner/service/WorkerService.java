@@ -15,4 +15,5 @@ public interface WorkerService {
 	int searchWorkerListCount(String name, String phone);
 	AuthTb verifyAuthToWorker(long workId, String authCode) throws Exception;
 	String applyWorker(WorkerTb worker, AccountTb account) throws Exception;
+	String searchWorkInfo(long workId) throws  Exception;
 }

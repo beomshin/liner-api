@@ -13,5 +13,5 @@ public interface WorkerTbRepository extends JpaRepository<WorkerTb, Long> {
 	List<WorkerTb> findByNameContainingAndPhoneContaining(String name, String phone);
 	List<WorkerTb> findByNameContainingAndPhoneContaining(String name, String phone, Pageable pageable);
 	int countByNameContainingAndPhoneContaining(String name, String phone);
-
+	WorkerTb findByWorkerId(long workerId);
 }

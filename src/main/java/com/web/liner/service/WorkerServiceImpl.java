@@ -129,4 +129,11 @@ public class WorkerServiceImpl implements WorkerService {
 		return authCode;
 	}
 
+	@Override
+	public String searchWorkInfo(long workId) throws Exception {
+		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
+		AES256Util aes256Util = new AES256Util();
+		return workerTb.getName() + "(" + aes256Util.decrypt(workerTb.getPhone()) + ")";
+	}
+
 }

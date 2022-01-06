@@ -48,6 +48,12 @@ public class AdminController {
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		List<OrderTb> orderList = orderService.searchOrderList(param.getOrderCode(), param.getPhone(), param.getName(), param.getFrom(), param.getTo(), param.getPageNum(), param.getCurPage());
 		int count  = orderService.searchOrderListCount(param.getOrderCode(), param.getPhone(), param.getName(), param.getFrom(), param.getTo());
+		for (OrderTb orderTb : orderList) {
+			if (orderTb.getWorkerTb() != null) {
+				orderTb.setWorkerInfo(workerService.searchWorkInfo(orderTb.getWorkerTb().getWorkerId()));
+				orderTb.setWorkerTb(null);
+			}
+		}
 		res.put("orderList", orderList);
 		res.put("count", count);
 		return Utils.resSet(res, param.getCmd());
