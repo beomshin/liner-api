@@ -70,9 +70,11 @@ public class AdminController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/order/worker/assign")
-	public Map<String, Object>  orderWorkerAssign(@RequestBody ReqWorkerAssign param) { // 알바 배정
+	public Map<String, Object>  orderWorkerAssign(@RequestBody ReqWorkerAssign param) throws Exception{ // 알바 배정
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		OrderTb orderTb = orderService.assignWorkerToOrder(Long.valueOf(param.getWorkerId()), Long.valueOf(param.getOrderId()));
+		orderService.assignWorkerToOrder(Long.valueOf(param.getWorkerId()), Long.valueOf(param.getOrderId()));
+		String workerInfo = workerService.searchWorkInfo(Long.valueOf(param.getWorkerId()));
+		res.put("workerInfo", workerInfo);
 		return Utils.resSet(res, param.getCmd());
 	}
 	

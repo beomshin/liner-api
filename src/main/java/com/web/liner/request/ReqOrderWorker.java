@@ -13,7 +13,6 @@ public class ReqOrderWorker {
 	private String crc;
 	private String name;
 	private String phone;
-	private Integer curPage;
 	private Integer pageNum;
-	
+	private Integer curPage;
 }
