@@ -64,6 +64,7 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
 
 		if(!StringUtils.isEmpty(phone)) {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
@@ -73,7 +74,9 @@ public class OrderServiceImpl implements OrderService {
 
 		for (OrderTb order : orderList) { // 핸드폰 복호화
 			try {
-				order.setPhone(new AES256Util().decrypt(order.getPhone()));	
+				order.setPhone(new AES256Util().decrypt(order.getPhone()));
+				order.setBeginTime(sdf2.format(sdf2.parse(order.getBeginTime())));
+				order.setEndTime(sdf2.format(sdf2.parse(order.getEndTime())));
 			} catch (Exception e) {
 				order.setPhone("핸드폰 암호화 오류");
 			}
@@ -89,6 +92,7 @@ public class OrderServiceImpl implements OrderService {
 		WorkerTb workerTb = new WorkerTb();
 		workerTb.setWorkerId(workerId); // 외래키 workerId 세팅
 		orderTb.setWorkerTb(workerTb);
+		orderTb.setState(3);
 		return orderTbRepository.save(orderTb); // update
 	}
 

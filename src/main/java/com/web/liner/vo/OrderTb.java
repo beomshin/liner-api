@@ -1,6 +1,7 @@
 package com.web.liner.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.*;
 
@@ -57,7 +58,7 @@ public class OrderTb {
 	
 	@Column(name = "orderTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
-	private Date orderTime;
+	private Timestamp orderTime;
 	
 	@Column(name = "serviceTime")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")

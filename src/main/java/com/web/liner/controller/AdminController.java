@@ -92,6 +92,7 @@ public class AdminController {
 	public Map<String, Object> workerAuth(@RequestBody ReqWorkerAuth param) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		workerService.verifyAuthToWorker(Long.valueOf(param.getWorkerId()), param.getAuthCode());
+		workerService.updateWorker(param.getWorkerId());
 		return Utils.resSet(res, param.getCmd());
 	}
 	

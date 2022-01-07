@@ -100,7 +100,14 @@ public class WorkerServiceImpl implements WorkerService {
 		}
 	}
 
-	
+	@Override
+	public WorkerTb updateWorker(long workId) throws Exception {
+		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
+		workerTb.setAuthFlag(1);
+		return workerTbRepository.save(workerTb);
+	}
+
+
 	@Override
 	public String applyWorker(WorkerTb worker, AccountTb account) throws Exception {
 		// TODO Auto-generated method stub
