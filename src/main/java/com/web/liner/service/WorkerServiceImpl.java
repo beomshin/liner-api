@@ -41,7 +41,7 @@ public class WorkerServiceImpl implements WorkerService {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화
 		}
 
-		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContaining(name, phone); // 알바 리스트 조회
+		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContainingAndAuthFlagAndState(name, phone, 1, 0); // 알바 리스트 조회
 
 		for (WorkerTb worker : workList) { // 핸드폰, 카카오톡 아이디, 계좌번호 복호화
 			try {
@@ -101,9 +101,16 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public WorkerTb updateWorker(long workId) throws Exception {
+	public WorkerTb updateAuthWorker(long workId) throws Exception {
 		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
 		workerTb.setAuthFlag(1);
+		return workerTbRepository.save(workerTb);
+	}
+
+	@Override
+	public WorkerTb updateStateWorker(long workId) throws Exception {
+		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
+		workerTb.setState(1);
 		return workerTbRepository.save(workerTb);
 	}
 

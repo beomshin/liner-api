@@ -74,6 +74,7 @@ public class AdminController {
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		orderService.assignWorkerToOrder(Long.valueOf(param.getWorkerId()), Long.valueOf(param.getOrderId()));
 		String workerInfo = workerService.searchWorkInfo(Long.valueOf(param.getWorkerId()));
+		workerService.updateStateWorker(param.getWorkerId());
 		res.put("workerInfo", workerInfo);
 		return Utils.resSet(res, param.getCmd());
 	}
@@ -92,7 +93,7 @@ public class AdminController {
 	public Map<String, Object> workerAuth(@RequestBody ReqWorkerAuth param) throws Exception {
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		workerService.verifyAuthToWorker(Long.valueOf(param.getWorkerId()), param.getAuthCode());
-		workerService.updateWorker(param.getWorkerId());
+		workerService.updateAuthWorker(param.getWorkerId());
 		return Utils.resSet(res, param.getCmd());
 	}
 	
