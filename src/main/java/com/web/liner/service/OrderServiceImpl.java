@@ -96,6 +96,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderTbRepository.save(orderTb); // update
 	}
 
+	@Override
+	public OrderTb cancelOrder(long orderId) throws Exception { // 결제 취소하기
+		OrderTb orderTb = orderTbRepository.findByOrderId(orderId);
+		orderTb.setState(5);
+		return orderTbRepository.save(orderTb);
+	}
+
 
 	@Override
 	public int searchOrderListCount(String orderCode, String phone, String name, String from, String to)

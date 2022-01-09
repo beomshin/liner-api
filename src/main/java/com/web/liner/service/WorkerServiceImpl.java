@@ -59,13 +59,13 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public List<WorkerTb> searchWorkerList(String phone, String name, int pageNum, int curPage) throws Exception {
+	public List<WorkerTb> searchWorkerList(String phone, String name, int state, int pageNum, int curPage) throws Exception {
 		// TODO Auto-generated method stub
 		if(!StringUtils.isEmpty(phone)) {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
 		}
 		
-		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContaining(name, phone, PageRequest.of(curPage, pageNum)); // 알바 리스트 조회
+		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContainingAndState(name, phone, PageRequest.of(curPage, pageNum), state); // 알바 리스트 조회
 		
 		for (WorkerTb worker : workList) { // 핸드폰, 카카오톡 아이디, 계좌번호 복호화
 			try {
@@ -108,9 +108,9 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public WorkerTb updateStateWorker(long workId) throws Exception {
+	public WorkerTb updateStateWorker(long workId, int state) throws Exception {
 		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
-		workerTb.setState(1);
+		workerTb.setState(state);
 		return workerTbRepository.save(workerTb);
 	}
 
@@ -147,7 +147,7 @@ public class WorkerServiceImpl implements WorkerService {
 	public String searchWorkInfo(long workId) throws Exception {
 		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
 		AES256Util aes256Util = new AES256Util();
-		return workerTb.getName() + "(" + aes256Util.decrypt(workerTb.getPhone()) + ")";
+		return workerTb.getName() + "(" + Utils.phoneFormat(aes256Util.decrypt(workerTb.getPhone())) + ")";
 	}
 
 }

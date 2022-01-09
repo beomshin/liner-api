@@ -14,4 +14,5 @@ public interface OrderService {
 	List<OrderTb> searchOrderList(String orderCode, String phone, String name, String from, String to, int pageNum, int curPage) throws Exception;
 	int searchOrderListCount(String orderCode, String phone, String name, String from, String to)  throws Exception;
 	OrderTb assignWorkerToOrder(long workerId, long orderId);
+	OrderTb cancelOrder(long orderId) throws Exception;
 }
