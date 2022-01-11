@@ -59,14 +59,14 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public List<WorkerTb> searchWorkerList(String phone, String name, int state, int pageNum, int curPage) throws Exception {
+	public List<WorkerTb> searchWorkerList(String phone, String name, int authFlag, int pageNum, int curPage) throws Exception {
 		// TODO Auto-generated method stub
 		if(!StringUtils.isEmpty(phone)) {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
 		}
 		
-		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContainingAndState(name, phone, PageRequest.of(curPage, pageNum), state); // 알바 리스트 조회
-		
+		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContainingAndAuthFlag(name, phone, PageRequest.of(curPage, pageNum), authFlag); // 알바 리스트 조회
+
 		for (WorkerTb worker : workList) { // 핸드폰, 카카오톡 아이디, 계좌번호 복호화
 			try {
 				worker.setPhone(new AES256Util().decrypt(worker.getPhone()));
@@ -83,9 +83,9 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public int searchWorkerListCount(String name, String phone) {
+	public int searchWorkerListCount(String name, String phone, int authFlag) {
 		// TODO Auto-generated method stub
-		return workerTbRepository.countByNameContainingAndPhoneContaining(name, phone); // 알바 리스트 총 개수 조회
+		return workerTbRepository.countByNameContainingAndPhoneContainingAndAuthFlag(name, phone, authFlag); // 알바 리스트 총 개수 조회
 	}
 
 	@Override

@@ -77,8 +77,9 @@ public class AdminController {
 	@RequestMapping(method = RequestMethod.POST, path = "/worker/list")
 	public Map<String, Object> workerList(@RequestBody ReqOrderWorker param) throws Exception { // 알바 리스트 불러오기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		List<WorkerTb> workerList = workerService.searchWorkerList(param.getPhone(), param.getName(), param.getState(), param.getPageNum(), param.getCurPage());
-		int count = workerService.searchWorkerListCount(param.getName(), param.getPhone());
+		List<WorkerTb> workerList = workerService.searchWorkerList(param.getPhone(), param.getName(), param.getAuthFlag(), param.getPageNum(), param.getCurPage());
+		int count = workerService.searchWorkerListCount(param.getName(), param.getPhone(), param.getAuthFlag());
+		res.put("totalPage", count%param.getPageNum() > 0 ? count/ param.getPageNum() + 1 : count / param.getPageNum());
 		res.put("workerList", workerList);
 		res.put("count", count);
 		return Utils.resSet(res, param.getCmd());
