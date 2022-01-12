@@ -1,6 +1,7 @@
 package com.web.liner.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "workertb")
 @Table(name = "workertb")
 @JsonInclude(Include.NON_NULL)
-@JsonIgnoreProperties({"regDt", "modDt", "accountId"})
+@JsonIgnoreProperties({"modDt", "accountId"})
 public class WorkerTb {
 
 	@Id
@@ -55,17 +56,17 @@ public class WorkerTb {
 	@Column(name = "authFlag")
 	private int authFlag;
 	
-	@Column(name = "count")
-	private int count;
-	
 	@Column(name = "regDt", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
-	private Date regDt;
+	private Timestamp regDt;
 	
 	@Column(name = "modDt")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Date modDt;
+
+	@Transient
+	private Long count;
 
 	@Transient
 	private String account;

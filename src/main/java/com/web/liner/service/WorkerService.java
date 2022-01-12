@@ -12,7 +12,7 @@ import com.web.liner.vo.WorkerTb;
 public interface WorkerService {
 	List<WorkerTb> searchOrderWorkerList(String phone, String name) throws Exception;
 	List<WorkerTb> searchWorkerList(String phone, String name, int authFlag, int pageNum, int curPage) throws Exception;
-	int searchWorkerListCount(String name, String phone, int authFlag);
+	long searchWorkerListCount(String name, String phone, int authFlag);
 	AuthTb verifyAuthToWorker(long workId, String authCode) throws Exception;
 	WorkerTb updateAuthWorker(long workId) throws Exception;
 	WorkerTb updateStateWorker(long workId, int state) throws  Exception;

@@ -2,6 +2,7 @@ package com.web.liner.service;
 
 import java.util.List;
 
+import com.web.liner.querydsl.WorkerQuerydsl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class WorkerServiceImpl implements WorkerService {
 	
 	@Autowired
 	WorkerTbRepository workerTbRepository;
+
+	@Autowired
+	WorkerQuerydsl workerQuerydsl;
 	
 	@Autowired
 	AuthTbRepository authTbRepository;
@@ -65,15 +69,13 @@ public class WorkerServiceImpl implements WorkerService {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
 		}
 		
-		List<WorkerTb> workList = workerTbRepository.findByNameContainingAndPhoneContainingAndAuthFlag(name, phone, PageRequest.of(curPage, pageNum), authFlag); // 알바 리스트 조회
+		List<WorkerTb> workList = workerQuerydsl.findWorkerList( phone, name, authFlag, pageNum, curPage); // 알바 리스트 조회
 
 		for (WorkerTb worker : workList) { // 핸드폰, 카카오톡 아이디, 계좌번호 복호화
 			try {
 				worker.setPhone(new AES256Util().decrypt(worker.getPhone()));
 				worker.setKakaoId(new AES256Util().decrypt(worker.getKakaoId()));
-				worker.setAccount(new AES256Util().decrypt(worker.getAccountTb().getAccount()));
-				worker.setBank(worker.getAccountTb().getBank());
-				worker.setAccountTb(null);
+				worker.setAccount(new AES256Util().decrypt(worker.getAccount()));
 			} catch (Exception e) {
 				worker.setAccount("계좌번호 복호화 오류");
 			}
@@ -83,9 +85,9 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
 	@Override
-	public int searchWorkerListCount(String name, String phone, int authFlag) {
+	public long searchWorkerListCount(String name, String phone, int authFlag) {
 		// TODO Auto-generated method stub
-		return workerTbRepository.countByNameContainingAndPhoneContainingAndAuthFlag(name, phone, authFlag); // 알바 리스트 총 개수 조회
+		return workerQuerydsl.findWorkerListCount(name, phone, authFlag); // 알바 리스트 총 개수 조회
 	}
 
 	@Override
