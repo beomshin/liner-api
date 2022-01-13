@@ -100,5 +100,12 @@ public class AdminController {
 		if (orderTb.getWorkerTb() != null) { workerService.updateStateWorker(orderTb.getWorkerTb().getWorkerId(), 0 ); } // 알바 배정 상태 변경
 		return Utils.resSet(res, param.getCmd());
 	}
+
+	@RequestMapping(method = RequestMethod.POST, path = "/worker/assign/cancel")
+	public Map<String, Object> workerAssignCancel(@RequestBody ReqWorkerAssginCancel param) throws Exception { // 결제 취소하기
+		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		workerService.updateStateWorker(param.getWorkerId(), 0 ); // 알바 배정 상태 변경
+		return Utils.resSet(res, param.getCmd());
+	}
 	
 }
