@@ -152,4 +152,11 @@ public class WorkerServiceImpl implements WorkerService {
 		return workerTb.getName() + "(" + Utils.phoneFormat(aes256Util.decrypt(workerTb.getPhone())) + ")";
 	}
 
+	@Override
+	public WorkerTb workerCountUp(long workId) throws Exception {
+		WorkerTb workerTb = workerTbRepository.findByWorkerId(workId);
+		workerTb.setCount(workerTb.getCount() + 1);
+		return workerTbRepository.save(workerTb);
+	}
+
 }

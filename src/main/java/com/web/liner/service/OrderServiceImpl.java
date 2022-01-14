@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.web.liner.querydsl.OrderQuerydsl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	ConfigTbRepository configTbRepository;
-	
+
 	@Override
 	@Transactional
 	public OrderTb applyOrder(OrderTb order) throws Exception {
@@ -56,6 +57,11 @@ public class OrderServiceImpl implements OrderService {
 		orderTb.setBeginTime(sdf.format(sdf.parse(orderTb.getBeginTime())));
 		orderTb.setEndTime(sdf.format(sdf.parse(orderTb.getEndTime())));
 		return orderTb; // orderCode로 주문내역 찾기
+	}
+
+	@Override
+	public OrderTb searchOrder(long orderId) throws Exception {
+		return orderTbRepository.findByOrderId(orderId);
 	}
 
 	@Override
@@ -97,9 +103,23 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderTb cancelOrder(long orderId) throws Exception { // 결제 취소하기
+	public OrderTb updateOrderState(long orderId, int state) throws Exception { // 결제 취소하기
 		OrderTb orderTb = orderTbRepository.findByOrderId(orderId);
-		orderTb.setState(5);
+		orderTb.setState(state);
+		return orderTbRepository.save(orderTb);
+	}
+
+	@Override
+	public OrderTb updateOrderStateByWorkerId(long workerId, int state) throws Exception {
+		OrderTb orderTb = orderTbRepository.findByWorkerTb_workerId(workerId);
+		orderTb.setState(state);
+		return orderTbRepository.save(orderTb);
+	}
+
+	@Override
+	public OrderTb updateOrderWorkerIdNull(long orderId) throws Exception {
+		OrderTb orderTb = orderTbRepository.findByOrderId(orderId);
+		orderTb.setWorkerTb(null);
 		return orderTbRepository.save(orderTb);
 	}
 

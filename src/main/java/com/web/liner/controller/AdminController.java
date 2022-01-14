@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,8 +52,8 @@ public class AdminController {
 				orderTb.setWorkerTb(null);
 			}
 		}
+		res.put("totalPage", count%param.getPageNum() > 0 ? count/ param.getPageNum() + 1 : count / param.getPageNum());
 		res.put("orderList", orderList);
-		res.put("count", count);
 		return Utils.resSet(res, param.getCmd());
 	}
 	
@@ -67,6 +68,10 @@ public class AdminController {
 	@RequestMapping(method = RequestMethod.POST, path = "/order/worker/assign")
 	public Map<String, Object>  orderWorkerAssign(@RequestBody ReqWorkerAssign param) throws Exception{ // 알바 배정
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		OrderTb orderTb = orderService.searchOrder(param.getOrderId());
+		if (orderTb.getWorkerTb() != null) {
+			workerService.updateStateWorker(orderTb.getWorkerTb().getWorkerId(), 0);
+		}
 		orderService.assignWorkerToOrder(Long.valueOf(param.getWorkerId()), Long.valueOf(param.getOrderId()));
 		String workerInfo = workerService.searchWorkInfo(Long.valueOf(param.getWorkerId()));
 		workerService.updateStateWorker(param.getWorkerId(), 1);
@@ -96,16 +101,31 @@ public class AdminController {
 	@RequestMapping(method = RequestMethod.POST, path = "/order/cancel")
 	public Map<String, Object> orderWorkerCancel(@RequestBody ReqWorkerCancel param) throws Exception { // 결제 취소하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
-		OrderTb orderTb = orderService.cancelOrder(param.getOrderId()); // 결제 취소 상태 변경
-		if (orderTb.getWorkerTb() != null) { workerService.updateStateWorker(orderTb.getWorkerTb().getWorkerId(), 0 ); } // 알바 배정 상태 변경
+		OrderTb orderTb = orderService.updateOrderState(param.getOrderId(), 5); // 결제 취소 상태 변경
+		if (orderTb.getWorkerTb() != null) {
+			workerService.updateStateWorker(orderTb.getWorkerTb().getWorkerId(), 0 );
+			orderService.updateOrderWorkerIdNull(param.getOrderId());
+		} // 알바 배정 상태 변경
 		return Utils.resSet(res, param.getCmd());
 	}
 
-	@RequestMapping(method = RequestMethod.POST, path = "/worker/assign/cancel")
+	@RequestMapping(method = RequestMethod.POST, path = "/order/worker/assign/cancel")
 	public Map<String, Object> workerAssignCancel(@RequestBody ReqWorkerAssginCancel param) throws Exception { // 결제 취소하기
 		Map<String, Object> res = new HashMap<String, Object>(); // res map
 		workerService.updateStateWorker(param.getWorkerId(), 0 ); // 알바 배정 상태 변경
+		OrderTb orderTb = orderService.updateOrderStateByWorkerId(param.getWorkerId(), 0);
+		orderService.updateOrderWorkerIdNull(orderTb.getOrderId());
 		return Utils.resSet(res, param.getCmd());
 	}
-	
+
+	@RequestMapping(method = RequestMethod.POST, path = "/order/completed")
+	public Map<String, Object> completedOrder(@RequestBody ReqCompletedOrder param) throws Exception { // 주문완료하기
+		Map<String, Object> res = new HashMap<String, Object>(); // res map
+		OrderTb orderTb = orderService.updateOrderState(param.getOrderId(), 4); // 주문 완료 상태 변경
+		orderService.updateOrderWorkerIdNull(orderTb.getOrderId());
+		workerService.workerCountUp(orderTb.getWorkerTb().getWorkerId());
+		workerService.updateStateWorker(orderTb.getWorkerTb().getWorkerId(), 0 );
+		orderService.updateOrderWorkerIdNull(orderTb.getOrderId());
+		return Utils.resSet(res, param.getCmd());
+	}
 }

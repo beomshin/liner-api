@@ -34,10 +34,11 @@ public class WorkerQuerydsl {
                     workerTb.accountTb.account,
                     workerTb.accountTb.bank,
                     workerTb.state,
-                    ExpressionUtils.as(JPAExpressions
-                            .select(orderTb.count())
-                            .from(orderTb)
-                            .where(orderTb.workerTb.workerId.eq(workerTb.workerId)), "count")
+                    workerTb.count
+//                    ExpressionUtils.as(JPAExpressions
+//                            .select(orderTb.count())
+//                            .from(orderTb)
+//                            .where(orderTb.workerTb.workerId.eq(workerTb.workerId), orderTb.state.eq(4)), "count")
                 ))
                 .from(workerTb)
                 .join(accountTb).on(workerTb.accountTb.accountId.eq(accountTb.accountId))

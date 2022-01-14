@@ -18,4 +18,5 @@ public interface WorkerService {
 	WorkerTb updateStateWorker(long workId, int state) throws  Exception;
 	String applyWorker(WorkerTb worker, AccountTb account) throws Exception;
 	String searchWorkInfo(long workId) throws  Exception;
+	WorkerTb workerCountUp(long workId) throws  Exception;
 }
