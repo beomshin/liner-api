@@ -30,7 +30,7 @@ public class AES256Util {
 	 *             키값의 길이가 16이하일 경우 발생
 	 */
 	
-	final static String key = "AAAAAAAAAAAAAAAA";
+	final static String key = "NSUZECPSFSWTXXDL";
 
 	public AES256Util() throws UnsupportedEncodingException {
 		this.iv = key.substring(0, 16);

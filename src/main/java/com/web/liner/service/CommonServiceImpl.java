@@ -1,7 +1,10 @@
 package com.web.liner.service;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
+import com.web.liner.util.AES256Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +58,9 @@ public class CommonServiceImpl implements CommonService{
 	}
 
 	@Override
-	public String adminLogin(String id, String pw) throws LineException {
-		AdminTb adminTb = adminTbRepository.findByIdAndPw(id, pw);
+	public String adminLogin(String id, String pw) throws LineException, UnsupportedEncodingException, GeneralSecurityException {
+		AES256Util aes256Util = new AES256Util();
+		AdminTb adminTb = adminTbRepository.findByIdAndPw(id, aes256Util.encrypt(pw));
 		if (adminTb == null) { // 과리자 페이지 로그인 실패
 			logger.error("====> [관리자 페이지 로그인 실패]");
 			throw new LineException(ErrorConstants.ADMIN_LOGIN_FAIL, "admin login fail");

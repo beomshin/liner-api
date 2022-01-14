@@ -69,6 +69,7 @@ public class JwtGenerator {
 			.setSigningKey(apikey.getBytes("UTF-8"))
 			.parseClaimsJws(jwt)
 			.getBody();
+            logger.debug("JWT 인증 성공 ===========> ");
     	} catch (Exception e) {
     		throw new LineException(ErrorConstants.JWT_VERIFY_ERROR, "jwt token verify fail error");
     	}
