@@ -23,6 +23,7 @@ import com.web.liner.mapping.BrandMapping;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Data
 @NoArgsConstructor
@@ -49,7 +50,11 @@ public class WorkerTb {
 	
 	@Column(name = "phone")
 	private String phone;
-	
+
+	@Column(name = "count")
+	@ColumnDefault("0")
+	private int count;
+
 	@Column(name = "state")
 	private int state;
 	
@@ -57,16 +62,12 @@ public class WorkerTb {
 	private int authFlag;
 	
 	@Column(name = "regDt", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Timestamp regDt;
 	
 	@Column(name = "modDt")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
 	private Date modDt;
-
-	@Column(name = "count")
-	private Long count;
 
 	@Transient
 	private String account;

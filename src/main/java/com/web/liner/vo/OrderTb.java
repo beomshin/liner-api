@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "ordertb")
 @JsonInclude(Include.NON_NULL)
 @DynamicInsert
-@JsonIgnoreProperties({"regDt", "modDt", "amount", "discountType", "discount"})
+@JsonIgnoreProperties({"regDt", "modDt", "discountType", "discount"})
 public class OrderTb {
 
 	@Id
@@ -66,7 +66,7 @@ public class OrderTb {
 	
 	@Column(name = "amount")
 	@ColumnDefault("0")
-	private int amount;
+	private Integer amount;
 	
 	@Column(name = "discountType")
 	@ColumnDefault("0")
