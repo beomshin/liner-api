@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
 			phone = new AES256Util().encrypt(phone); // 휴대폰 암호화			
 		}
 		
-		List<OrderTb> orderList = orderTbRepository.findByOrderCodeContainingAndNameContainingAndPhoneContainingAndOrderTimeBetween(orderCode, name, phone, sdf.parse(from), sdf.parse(to), PageRequest.of(curPage, pageNum)); // 주문 리스트 조회
+		List<OrderTb> orderList = orderTbRepository.findByOrderCodeContainingAndNameContainingAndPhoneContainingAndOrderTimeBetweenOrderByRegDtDesc(orderCode, name, phone, sdf.parse(from), sdf.parse(to), PageRequest.of(curPage, pageNum)); // 주문 리스트 조회
 
 		for (OrderTb order : orderList) { // 핸드폰 복호화
 			try {

@@ -60,6 +60,7 @@ public class CommonServiceImpl implements CommonService{
 	@Override
 	public String adminLogin(String id, String pw) throws LineException, UnsupportedEncodingException, GeneralSecurityException {
 		AES256Util aes256Util = new AES256Util();
+		logger.debug(aes256Util.encrypt(pw));
 		AdminTb adminTb = adminTbRepository.findByIdAndPw(id, aes256Util.encrypt(pw));
 		if (adminTb == null) { // 과리자 페이지 로그인 실패
 			logger.error("====> [관리자 페이지 로그인 실패]");

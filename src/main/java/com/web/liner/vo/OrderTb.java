@@ -57,11 +57,11 @@ public class OrderTb {
 	private String endTime;
 	
 	@Column(name = "orderTime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	private Timestamp orderTime;
 	
 	@Column(name = "serviceTime")
-	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Date serviceTime;
 	
 	@Column(name = "amount")
